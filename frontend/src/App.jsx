@@ -12,6 +12,9 @@ import AddProduct from './components/AddProduct';
 
 import { login } from './redux/slices/userSlice';
 import axios from 'axios';
+import Checkout from './components/Checkout';
+import OrderSuccess from './components/OrderSuccess';
+import OrderHistory from './components/OrderHistory';
 
 function App() {
 
@@ -75,6 +78,9 @@ function App() {
         <Route path="products" element={<ProductList />} />
         <Route path="cart" element={<Cart />} /> 
         <Route path="add-product" element={<AddProduct />} />
+        <Route path="checkout" element={<Checkout />} />
+        <Route path="order-success" element={<OrderSuccess />} />
+        <Route path="orderhistory" element={<OrderHistory />} />
       </Route>
       <Route path="*" element={<Navigate to="/home/products" />} />
     </Routes>
@@ -86,6 +92,8 @@ function App() {
       <Route path="/home" element={<HomeContainer />}>
         <Route path="products" element={<ProductList  />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="checkout" element={<Checkout />} />
+        <Route path="order-success" element={<OrderSuccess />} />
 
       </Route>
       <Route path="*" element={<Navigate to="/home/products" />} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
-import Logo from "../assets/EmpList.png";
+import Logo from "../assets/icon.png";
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart } from "react-icons/fa";
 import axios from 'axios';
@@ -88,13 +88,14 @@ const Header = () => {
     } else {
       setCartCount(0); // If no user is logged in, cart count should be 0
     }
+    // eslint-disable-next-line
   }, [user]);
 
 
   return (
     <>
   
-<div id="myModal" class="modal " role="dialog">
+<div id="myModal" class="modal " role="dialog" >
   
   <div class="modal-dialog">
     <div class="modal-content">
@@ -145,7 +146,7 @@ const Header = () => {
   </div>
 </div>
     <header className="header">
-      <img src={Logo} className="logo" alt="logo" />
+      <img src={Logo} onClick={() => navigate("/home/products")} className="website-logo" alt="logo" />
       {/* <button  data-toggle="modal" data-target="#myModal">Open Modal</button> */}
       {user ? (
         <>

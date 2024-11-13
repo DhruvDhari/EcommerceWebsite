@@ -7,6 +7,7 @@ const employeeRoutes = require('./routes/employeeRoutes');
 const postRoutes = require('./routes/postRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes= require('./routes/orderRoutes');
 const path = require('path');
 
 
@@ -28,6 +29,7 @@ app.use('/api/employees', employeeRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/products', productRoutes );
 app.use('/api/cart', cartRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

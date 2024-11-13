@@ -172,7 +172,7 @@ function EmployeeList() {
                         
                         <button
                           onClick={() => handleDelete(employee._id)}
-                          className="action-button"
+                          className="action-button" style={{backgroundColor:'#ff4d4d'}}
                         >
                          <i className="bi bi-trash"></i>
                         </button>

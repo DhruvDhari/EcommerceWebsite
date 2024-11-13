@@ -8,6 +8,7 @@ const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [category, setCategory] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const productsPerPage = 10;
@@ -15,7 +16,7 @@ const ProductList = () => {
     const userId = user?.userId;
     const dispatch = useDispatch();
     const [containerClass, setContainerClass] = useState('full-width');
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -45,14 +46,15 @@ const ProductList = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) {
-                return;
+            // Check if you've scrolled close to the bottom
+            if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 50 && !loading) {
+                setCurrentPage((prevPage) => prevPage + 1);
             }
-            setCurrentPage((prevPage) => prevPage + 1);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, [loading]);
+    
 
     useEffect(() => {
         const loadMoreProducts = () => {
@@ -68,12 +70,36 @@ const ProductList = () => {
     const handleCategoryChange = (e) => {
         setCategory(e.target.value);
         setCurrentPage(1);
-        if (e.target.value === '') {
-            setFilteredProducts(products.slice(0, productsPerPage));
-        } else {
-            const filtered = products.filter(product => product.category === e.target.value);
-            setFilteredProducts(filtered.slice(0, productsPerPage));
+        filterProducts(e.target.value, searchTerm);
+    };
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        setCurrentPage(1);
+        filterProducts(category, e.target.value);
+    };
+
+    const clearFilters = () => {
+        setCategory('');
+        setSearchTerm('');
+        setCurrentPage(1);
+        setFilteredProducts(products.slice(0, productsPerPage));
+    };
+
+    const filterProducts = (category, searchTerm) => {
+        let filtered = products;
+        
+        if (category) {
+            filtered = filtered.filter((product) => product.category === category);
         }
+        
+        if (searchTerm) {
+            filtered = filtered.filter((product) =>
+                product.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+        
+        setFilteredProducts(filtered.slice(0, productsPerPage));
     };
 
     const addToCart = async (product) => {
@@ -107,7 +133,6 @@ const ProductList = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             });
             alert("Product deleted successfully.");
-            // Remove the product from the product list after deletion
             setProducts((prevProducts) => prevProducts.filter(product => product._id !== productId));
             setFilteredProducts((prevFilteredProducts) => prevFilteredProducts.filter(product => product._id !== productId));
         } catch (error) {
@@ -118,28 +143,37 @@ const ProductList = () => {
 
     return (
         <div className={containerClass}>
+            <div className="product-header">
+                <input
+                    type="text"
+                    placeholder="Search by name"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="search-bar"
+                />
+                 <button onClick={clearFilters} className="clear-btn">
+                    Clear
+                </button>
+                <select className="dropdown" value={category} onChange={handleCategoryChange}>
+                    <option value="">All Categories</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="footwear">Footwear</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="home">Home</option>
+                    <option value="toys">Toys</option>
+                </select>
 
 
-<div className="product-header">
+                {user?.email === 'admin@admin.com' && (
+                    <button
+                        style={{ width: '150px', height: '40px',marginLeft:'320px' }}
+                        onClick={() => navigate("/home/add-product")}
+                    >
+                        + Add Product
+                    </button>
+                )}
+            </div>
 
-
-            <select class="btn btn-secondary dropdown " value={category} onChange={handleCategoryChange}>
-                <option value="">All Categories</option>
-                <option class="dropdown-item" value="electronics">Electronics</option>
-                <option class="dropdown-item" value="footwear">Footwear</option>
-                <option class="dropdown-item" value="fashion">Fashion</option>
-                <option class="dropdown-item" value="home">Home</option>
-                <option class="dropdown-item" value="toys">Toys</option>
-            </select>
-            {user?.email === 'admin@admin.com' && (
-                            <button
-                            style={{  width: '200px',height:'40px' }}
-                            onClick={() => navigate("/home/add-product")}
-                            >
-                               + Add Product
-                            </button>
-                        )}
-                        </div>
             <div className="product-grid">
                 {filteredProducts.map((product) => (
                     <div key={product._id} className="product-card">
@@ -147,23 +181,20 @@ const ProductList = () => {
                         <h3>{product.name}</h3>
                         <p>Price: ₹ {formatPrice(product.price)}</p>
                         <div className="flex">
-
-                        <button onClick={() => addToCart(product)}>Add to Cart</button>
-                        
-                        {user?.email === 'admin@admin.com' && (
-                            <button
-                            style={{  backgroundColor: '#ff3434' }}
-                            onClick={() => removeProduct(product._id)}
-                            >
-                                Remove 
-                            </button>
-                        )}
+                            <button onClick={() => addToCart(product)}>Add to Cart</button>
+                            {user?.email === 'admin@admin.com' && (
+                                <button
+                                    style={{ backgroundColor: '#ff3434' }}
+                                    onClick={() => removeProduct(product._id)}
+                                >
+                                    Remove
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}
             </div>
             {loading && <p>Loading more products...</p>}
-            
         </div>
     );
 };
