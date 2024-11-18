@@ -326,6 +326,18 @@ td > div.action-container {
 .modal-content{
   background-color:#eeeeeef5;
 }
+.modal-body{
+  /* background-color: #6fff9179;
+  border-top: 2px solid black; */
+
+}
+
+.modal-header{
+  h2{
+    font-weight: 700;
+    font-size: 40px;
+  }
+}
 
 .home{
   position: relative;

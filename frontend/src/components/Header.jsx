@@ -99,12 +99,12 @@ const Header = () => {
   
   <div class="modal-dialog">
     <div class="modal-content">
-      
+  
     <div class="modal-header">
     <div  class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </div>
-    <center>
+     <center>
       <h2>Login</h2>
       </center>
        
