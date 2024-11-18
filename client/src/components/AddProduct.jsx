@@ -23,7 +23,7 @@ const AddProduct = () => {
         const token = localStorage.getItem('token');
 
         try {
-            await axios.post('http://localhost:5000/api/products', formData, {
+            await axios.post('https://ecommercewebsite-hv8m.onrender.com/api/products', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`,

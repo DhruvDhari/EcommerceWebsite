@@ -10,7 +10,7 @@ function Post() {
     
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/posts', {
+        const response = await axios.get('https://ecommercewebsite-hv8m.onrender.com/api/posts', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -28,7 +28,7 @@ function Post() {
   
     const fetchUsername = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/auth/me', {
+        const response = await axios.get('https://ecommercewebsite-hv8m.onrender.com/api/auth/me', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -44,7 +44,7 @@ function Post() {
 
   const handlePost = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/posts', {
+      const response = await axios.post('https://ecommercewebsite-hv8m.onrender.com/api/posts', {
         username,
         text: message,
       }, {

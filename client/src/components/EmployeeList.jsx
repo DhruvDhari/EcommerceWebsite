@@ -14,7 +14,7 @@ function EmployeeList() {
     const fetchEmployees = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/employees",
+          "https://ecommercewebsite-hv8m.onrender.com/api/employees",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -30,7 +30,7 @@ function EmployeeList() {
 
     const fetchUserName = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/auth/me", {
+        const response = await axios.get("https://ecommercewebsite-hv8m.onrender.com/api/auth/me", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -49,7 +49,7 @@ function EmployeeList() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/employees/${id}`, {
+        await axios.delete(`https://ecommercewebsite-hv8m.onrender.com/api/employees/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -71,7 +71,7 @@ function EmployeeList() {
   const saveUpdatedEmployee = async (id) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/employees/${id}`,
+        `https://ecommercewebsite-hv8m.onrender.com/api/employees/${id}`,
         { username: updatedName, email: updatedEmail },
         {
           headers: {
