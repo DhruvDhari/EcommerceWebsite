@@ -60,26 +60,29 @@ const Header = () => {
 
   const fetchCartItems = async (userId) => {
     try {
-     
       const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/cart/${userId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
-      const totalItems = data.items.reduce((total, item) => total + item.quantity, 0);
-    
+  
+      // Check if data.items exists and is an array before applying reduce
+      const totalItems = Array.isArray(data.items) 
+        ? data.items.reduce((total, item) => total + item.quantity, 0) 
+        : 0;
+  
       dispatch(setCartCount(totalItems));
   
     } catch (error) {
       if (error.response && error.response.status === 404) {
         console.log('Cart not found, setting cart count to 0.');
-        setCartCount(0); // Handle case where cart does not exist
+        dispatch(setCartCount(0)); // Handle case where cart does not exist
       } else {
         console.error('Error fetching cart items:', error);
       }
     }
   };
+  
   
 
   useEffect(() => {

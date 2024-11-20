@@ -111,7 +111,7 @@ const Cart = () => {
                   className="cart-item"
                 >
                   <img
-                    src={item.image}
+                    src={`${process.env.REACT_APP_BACKEND_URL}${item.image}`}
                     alt={item.name}
                     className="cart-item-img"
                     />
