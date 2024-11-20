@@ -154,18 +154,10 @@ const ProductList = () => {
 
     return (
         <div className={containerClass}>
-              {/* {user && (
+              {user && (
                         <h2 className="welcome-message" style={{marginBottom:'20px',marginTop:'15px'}}>Welcome {user?.username.toUpperCase()}</h2>
-                )} */}
-                 {user && user.username ? (
-    <h2 className="welcome-message" style={{ marginBottom: '20px', marginTop: '15px' }}>
-      Welcome {user.username.toUpperCase()}
-    </h2>
-  ) : (
-    <h2 className="welcome-message" style={{ marginBottom: '20px', marginTop: '15px' }}>
-      Welcome Guest
-    </h2>
-  )}
+                )}
+    
             <div className="product-header">
               
                 <input
