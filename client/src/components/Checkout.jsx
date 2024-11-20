@@ -57,7 +57,7 @@ const Checkout = () => {
 
     try {
       // Include userId in the data sent to the backend
-      await axios.post("/api/orders", formData, {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/orders`, formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
    

@@ -15,7 +15,7 @@ function Login() {
   const loginHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/auth/login', { email, password });
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, { email, password });
       localStorage.setItem('profileImage', data.profileImage);
       localStorage.setItem('token', data.token);
       

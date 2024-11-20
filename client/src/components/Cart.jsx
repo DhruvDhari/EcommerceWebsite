@@ -22,7 +22,7 @@ const Cart = () => {
     const fetchCart = async () => {
       if (!userId) return;
       try {
-        const { data } = await axios.get(`/api/cart/${userId}`, {
+        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/cart/${userId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -59,7 +59,7 @@ const Cart = () => {
   const updateQuantity = async (productId, action) => {
     try {
       const { data } = await axios.put(
-        `/api/cart/update/${userId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/cart/update/${userId}`,
         {
           productId,
           action, // action could be 'increment' or 'decrement'
@@ -97,7 +97,7 @@ const Cart = () => {
 
   return (
     <div className="cart">
-      <h2>Shopping Cart</h2>
+      <h3 style={{fontWeight:'bold'}}>Shopping Cart</h3>
       {cartItems.length === 0 ? (
         <h3>Your cart is empty</h3>
       ) : (

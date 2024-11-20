@@ -26,7 +26,7 @@ const Header = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/auth/login', { email, password });
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, { email, password });
       localStorage.setItem('profileImage', data.profileImage);
       localStorage.setItem('token', data.token);
       
@@ -61,7 +61,7 @@ const Header = () => {
   const fetchCartItems = async (userId) => {
     try {
      
-      const { data } = await axios.get(`/api/cart/${userId}`, {
+      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/cart/${userId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -158,7 +158,7 @@ const Header = () => {
             Logout
           </button>
           
-          <img src={profileImage} alt="icon" className="logo" />
+          <img src={`${process.env.REACT_APP_BACKEND_URL}${profileImage}`} alt="icon" className="logo" />
         </>
       ) : (
         <>

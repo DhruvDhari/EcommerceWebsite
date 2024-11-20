@@ -35,7 +35,7 @@ function Register({setUser}) {
 
 
       try {
-      const { data } = await axios.post('/api/auth/register', formData, {
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, formData, {
          headers: {
             'Content-Type': 'multipart/form-data',
          },

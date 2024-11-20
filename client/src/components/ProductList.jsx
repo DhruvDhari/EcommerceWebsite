@@ -22,7 +22,7 @@ const ProductList = () => {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                const { data } = await axios.get('/api/products');
+                const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/products`);
                 setProducts(data);
                 setFilteredProducts(data);
                 setLoading(false);
@@ -46,15 +46,17 @@ const ProductList = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            // Check if you've scrolled close to the bottom
-            if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 50 && !loading) {
+            if (
+                window.innerHeight + document.documentElement.scrollTop >=
+                    document.documentElement.offsetHeight - 50 &&
+                !loading
+            ) {
                 setCurrentPage((prevPage) => prevPage + 1);
             }
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, [loading]);
-    
 
     useEffect(() => {
         const loadMoreProducts = () => {
@@ -88,35 +90,40 @@ const ProductList = () => {
 
     const filterProducts = (category, searchTerm) => {
         let filtered = products;
-        
+
         if (category) {
             filtered = filtered.filter((product) => product.category === category);
         }
-        
+
         if (searchTerm) {
             filtered = filtered.filter((product) =>
                 product.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
-        
+
         setFilteredProducts(filtered.slice(0, productsPerPage));
+        console.log(products[0].image[0]);
     };
 
     const addToCart = async (product) => {
         if (!userId) {
-            alert("Please login to add items to the cart.");
+            alert('Please login to add items to the cart.');
             return;
         }
         try {
-            await axios.post('/api/cart/add', {
-                userId,
-                productId: product._id,
-                name: product.name,
-                price: product.price,
-                image: product.image[0],
-            }, {
-                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-            });
+            await axios.post(
+                `${process.env.REACT_APP_BACKEND_URL}/api/cart/add`,
+                {
+                    userId,
+                    productId: product._id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image[0],
+                },
+                {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                }
+            );
             alert(`${product.name} added to cart!`);
             dispatch(incrementCartCount());
         } catch (error) {
@@ -129,21 +136,29 @@ const ProductList = () => {
             return;
         }
         try {
-            await axios.delete(`/api/products/${productId}`, {
-                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/products/${productId}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
-            alert("Product deleted successfully.");
-            setProducts((prevProducts) => prevProducts.filter(product => product._id !== productId));
-            setFilteredProducts((prevFilteredProducts) => prevFilteredProducts.filter(product => product._id !== productId));
+            alert('Product deleted successfully.');
+            setProducts((prevProducts) =>
+                prevProducts.filter((product) => product._id !== productId)
+            );
+            setFilteredProducts((prevFilteredProducts) =>
+                prevFilteredProducts.filter((product) => product._id !== productId)
+            );
         } catch (error) {
             console.error('Error deleting product:', error);
-            alert("Error deleting product.");
+            alert('Error deleting product.');
         }
     };
 
     return (
         <div className={containerClass}>
+              {user && (
+                        <h2 className="welcome-message" style={{marginBottom:'20px',marginTop:'15px'}}>Welcome {user.username.toUpperCase()}</h2>
+                )}
             <div className="product-header">
+              
                 <input
                     type="text"
                     placeholder="Search by name"
@@ -151,7 +166,7 @@ const ProductList = () => {
                     onChange={handleSearchChange}
                     className="search-bar"
                 />
-                 <button onClick={clearFilters} className="clear-btn">
+                <button onClick={clearFilters} className="clear-btn">
                     Clear
                 </button>
                 <select className="dropdown" value={category} onChange={handleCategoryChange}>
@@ -163,11 +178,10 @@ const ProductList = () => {
                     <option value="toys">Toys</option>
                 </select>
 
-
                 {user?.email === 'admin@admin.com' && (
                     <button
-                        style={{ width: '150px', height: '40px',marginLeft:'320px' }}
-                        onClick={() => navigate("/home/add-product")}
+                        style={{ width: '150px', height: '40px', marginLeft: '320px' }}
+                        onClick={() => navigate('/home/add-product')}
                     >
                         + Add Product
                     </button>
@@ -175,49 +189,29 @@ const ProductList = () => {
             </div>
 
             <div className="product-grid">
-            {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
-        filteredProducts.map((product) => (
-            <div key={product._id} className="product-card">
-                <img src={product.image[0]} alt={product.name} />
-                <h3>{product.name}</h3>
-                <p>Price: ₹ {formatPrice(product.price)}</p>
-                <div className="flex">
-                    <button onClick={() => addToCart(product)}>Add to Cart</button>
-                    {user?.email === 'admin@admin.com' && (
-                        <button
-                            style={{ backgroundColor: '#ff3434' }}
-                            onClick={() => removeProduct(product._id)}
-                        >
-                            Remove
-                        </button>
-                    )}
-                </div>
-            </div>
-        ))
-    ) : (
-        <p>Loading...</p> // If no products, show a message
-    )}
-                
-                {/* {filteredProducts.map((product) => (
-                    <div key={product._id} className="product-card">
-                        <img src={product.image[0]} alt={product.name} />
-                        <h3>{product.name}</h3>
-                        <p>Price: ₹ {formatPrice(product.price)}</p>
-                        <div className="flex">
-                            <button onClick={() => addToCart(product)}>Add to Cart</button>
-                            {user?.email === 'admin@admin.com' && (
-                                <button
-                                    style={{ backgroundColor: '#ff3434' }}
-                                    onClick={() => removeProduct(product._id)}
-                                >
-                                    Remove
-                                </button>
-                            )}
+                {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
+                    filteredProducts.map((product) => (
+                        <div key={product._id} className="product-card">
+                            <img src={`${process.env.REACT_APP_BACKEND_URL}${product.image[0]}`} alt={product.name} />
+                            <h3>{product.name}</h3>
+                            <p>Price: ₹ {formatPrice(product.price)}</p>
+                            <div className="flex">
+                                <button onClick={() => addToCart(product)}>Add to Cart</button>
+                                {user?.email === 'admin@admin.com' && (
+                                    <button
+                                        style={{ backgroundColor: '#ff3434' }}
+                                        onClick={() => removeProduct(product._id)}
+                                    >
+                                        Remove
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                ))} */}
+                    ))
+                ) : (
+                    <p>Loading...</p>
+                )}
             </div>
-            {/* {loading && <p>Loading more products...</p>} */}
         </div>
     );
 };

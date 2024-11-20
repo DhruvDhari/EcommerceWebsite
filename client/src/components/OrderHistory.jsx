@@ -10,7 +10,7 @@ const OrderHistory = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('/api/orders', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/orders`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -50,6 +50,10 @@ const OrderHistory = () => {
     order.orderNumber.includes(searchQuery)
   );
 
+  const clearSearch = () => {
+    setSearchQuery('');
+  };
+
   if (loading) {
     return <div>Loading orders...</div>;
   }
@@ -57,15 +61,21 @@ const OrderHistory = () => {
   return (
     <div className="orderHistory">
       <h2>Order History</h2>
-      
-      {/* Search Bar */}
-      <input
-        type="text"
-        placeholder="Search by Name or Order Number"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="search-bar"
-      />
+
+      {/* Search Bar with Clear Button */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by Name or Order Number"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-bar"
+          style={{marginRight:'10px'}}
+        />
+        <button onClick={clearSearch} className="clear-btn">
+          Clear
+        </button>
+      </div>
 
       <div className="orders-table">
         <div className="orders-header">
