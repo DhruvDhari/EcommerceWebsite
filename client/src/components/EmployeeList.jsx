@@ -120,7 +120,9 @@ function EmployeeList() {
   
 
         <div className="employee-list-container">
-        <h2 className="welcome-message">Welcome {userName}</h2>
+        {/* <h2 className="welcome-message">Welcome {userName?.toUpperCase()}</h2> */}
+        <h2 className="welcome-message">Welcome {userName ? userName.toUpperCase() : 'Guest'}</h2>
+
           <table className="employee-table">
             <thead>
               <tr>
