@@ -176,7 +176,7 @@ const Header = () => {
             </button>
             <img
               src={`${process.env.REACT_APP_BACKEND_URL}${profileImage}`}
-              alt="icon"
+              alt="iconnn"
               className="logo"
             />
           </>

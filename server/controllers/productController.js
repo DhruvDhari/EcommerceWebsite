@@ -4,7 +4,7 @@ const Product = require('../models/Product');
 exports.createProduct = async (req, res) => {
     try {
         const { name, category, price, description } = req.body; // Include description in destructuring
-        const image = `/uploads/${req.file.filename}`;
+        const image = `https://ecommercewebsite-hv8m.onrender.com/uploads/${req.file.filename}`;
         
         // Ensure all required fields are provided
         if (!name || !category || !price || !description || !image) {

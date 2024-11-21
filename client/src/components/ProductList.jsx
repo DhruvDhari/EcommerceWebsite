@@ -102,7 +102,7 @@ const ProductList = () => {
         }
 
         setFilteredProducts(filtered.slice(0, productsPerPage));
-        console.log(products[0].image[0]);
+ 
     };
 
     const addToCart = async (product) => {

@@ -344,6 +344,7 @@ td > div.action-container {
 }
 .dropdown{
   padding: 10px;
+  cursor: pointer;
 }
 
 .post-container, .add-product, .product-list, .cart,.orderHistory{
