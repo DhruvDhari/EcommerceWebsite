@@ -9,7 +9,7 @@ exports.registerUser = async (req, res) => {
 
   const { username, email, password } = req.body;
 
-  const profileImage = req.file ? `https://ecommercewebsite-hv8m.onrender.com/uploads/${req.file.filename}` : 'https://walnuteducation.com/static/core/images/icon-profile.png';
+  const profileImage = req.file ? `/uploads/${req.file.filename}` : 'https://walnuteducation.com/static/core/images/icon-profile.png';
   
   // const profilePhoto = req.file ? req.file.path : 'https://walnuteducation.com/static/core/images/icon-profile.png';
 

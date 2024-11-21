@@ -26,7 +26,7 @@ const Header = () => {
       const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, { email, password });
       localStorage.setItem('profileImage', data.profileImage);
       localStorage.setItem('token', data.token);
-      
+   
       dispatch(login(data));  // Dispatch login action to Redux
 
       window.$('#myModal').modal('hide');
@@ -64,6 +64,7 @@ const Header = () => {
         : 0;
 
       dispatch(setCartCount(totalItems));
+     
 
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -86,8 +87,9 @@ const Header = () => {
 
   // Handle guest login
   const handleGuestLogin = () => {
-    setEmail('guest@gmail.com');
-    setPassword('guest123');
+    setEmail('dhruv@gmail.com');
+    setPassword('dhruv');
+    
    
   };
 
@@ -175,10 +177,13 @@ const Header = () => {
               Logout
             </button>
             <img
-              src={`${process.env.REACT_APP_BACKEND_URL}${profileImage}`}
-              alt="iconnn"
-              className="logo"
-            />
+  src={profileImage && profileImage.startsWith('http') 
+    ? profileImage 
+    : `${process.env.REACT_APP_BACKEND_URL}${profileImage || '/path/to/default-icon.png'}`}
+  alt="icon"
+  className="logo"
+/>
+
           </>
         ) : (
           <>
